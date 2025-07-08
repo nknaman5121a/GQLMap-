@@ -3,8 +3,13 @@ import os
 import json
 from datetime import datetime
 
-def generate_html_report(data, output_file="output/report.html", output_format="html"):
+def generate_html_report(data, output_file=None, output_format="txt"):
     try:
+        # Set default output path if not given
+        if output_file is None:
+            domain = data.get("url", "report").replace("https://", "").replace("http://", "").replace("/", "_").strip("_")
+            output_file = f"output/{domain}_report.txt"
+
         os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
         if output_format == "html":
@@ -84,8 +89,6 @@ def generate_html_report(data, output_file="output/report.html", output_format="
 
     except Exception as e:
         print(f"[!] Failed to generate report: {e}")
-
-
 
 
 def save_to_report(data, filename="output/report.json"):
