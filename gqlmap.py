@@ -105,7 +105,7 @@ def main():
             # Add more fields as needed
         }
     
-        generate_html_report(
+        generate_report(
             data=report_data,
             output_file=report_path,
             output_format=args.output
