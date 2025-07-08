@@ -100,24 +100,24 @@ def main():
         }
 
         # Always print to stdout
-        print("\nGraphQL Map Report")
+       #print("\nGraphQL Map Report")
         print("=" * 40)
         print(f"URL:                {report_data['url']}")
         print(f"GraphQL Endpoint:   {report_data['endpoint']}")
         print(f"Introspection:      {'✅' if report_data['introspected'] else '❌'}")
         print(f"Injection Tested:   {'✅' if report_data['injection_tested'] else '❌'}")
         print(f"Mutation Tested:    {'✅' if report_data['mutation_tested'] else '❌'}")
-        print(f"Generated On:       {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+       #print(f"Generated On:       {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
         # Only save report if output flag is given
-        if args.output:
-            domain = urlparse(base_url).netloc.replace('.', '_')
-            report_path = args.report or f"output/{domain}_report.{args.output}"
-            generate_report(
-                data=report_data,
-                output_file=report_path,
-                output_format=args.output
-            )
+    if args.output:
+        domain = urlparse(base_url).netloc.replace('.', '_')
+        report_path = args.report or f"output/{domain}_report.{args.output}"
+        generate_report(
+            data=report_data,
+            output_file=report_path,
+            output_format=args.output
+        )
 
     # Step 6: Auth Bypass
     if args.token or args.test_roles or args.header_fuzz:
