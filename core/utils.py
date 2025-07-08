@@ -2,14 +2,16 @@
 
 import os
 import json
+from datetime import datetime
+
 
 def generate_html_report(data, output_file="output/report.html", output_format="html"):
     try:
         os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
-        if output_format == "html":
-            with open(output_file, "w") as f:
-                f.write(f"""
+      if output_format == "html":
+    with open(output_file, "w") as f:
+        f.write(f"""
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,19 +33,31 @@ def generate_html_report(data, output_file="output/report.html", output_format="
         h1 {{
             color: #333;
         }}
-        pre {{
-            background: #f0f0f0;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-            white-space: pre-wrap;
+        .summary {{
+            font-size: 16px;
+            line-height: 1.6;
+        }}
+        .status-true {{
+            color: green;
+            font-weight: bold;
+        }}
+        .status-false {{
+            color: red;
+            font-weight: bold;
         }}
     </style>
 </head>
 <body>
     <div class="container">
         <h1>GraphQL Map Report</h1>
-        <pre>{json.dumps(data, indent=4)}</pre>
+        <div class="summary">
+            <p><strong>URL:</strong> {data.get("url")}</p>
+            <p><strong>GraphQL Endpoint:</strong> {data.get("endpoint")}</p>
+            <p><strong>Introspection:</strong> <span class="status-{str(data.get("introspected")).lower()}">{'✅' if data.get("introspected") else '❌'}</span></p>
+            <p><strong>Injection Tested:</strong> <span class="status-{str(data.get("injection_tested")).lower()}">{'✅' if data.get("injection_tested") else '❌'}</span></p>
+            <p><strong>Mutation Tested:</strong> <span class="status-{str(data.get("mutation_tested")).lower()}">{'✅' if data.get("mutation_tested") else '❌'}</span></p>
+            <p><strong>Generated On:</strong> {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}</p>
+        </div>
     </div>
 </body>
 </html>
