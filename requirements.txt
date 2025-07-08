@@ -1,4 +1,4 @@
-request
+requests
 httpx
 beautifulsoup4
 lxml
