@@ -1,4 +1,7 @@
 import argparse
+from urllib.parse import urlparse
+from datetime import datetime
+
 from core.endpoint_finder import detect_graphql_endpoint
 from core.js_scraper import find_graphql_from_js
 from core.schema_enum import introspect_schema
@@ -6,9 +9,6 @@ from core.injector import inject
 from core.utils import generate_report
 from core.auth_tester import test_auth_bypass
 from core.mutation_engine import run_mutation_engine
-from urllib.parse import urlparse
-from datetime import datetime
-
 
 
 def main():
@@ -27,7 +27,7 @@ def main():
     parser.add_argument("--retries", type=int, default=2, help="Retry count for failed requests")
     parser.add_argument("--verbose", action="store_true", help="Verbose output (debug level)")
     parser.add_argument("--report", help="Custom report file path")
-    parser.add_argument("--output", choices=["html", "json", "markdown", "txt"], default="txt", help="Output report format")
+    parser.add_argument("--output", choices=["html", "json", "markdown", "txt"], help="Output report format")
 
     args = parser.parse_args()
 
@@ -89,7 +89,7 @@ def main():
             verbose=args.verbose
         )
 
-    # Step 5: Report generation
+    # Step 5: Report generation (print always, file only if --output provided)
     if args.introspect or args.inject or args.mutate:
         report_data = {
             "url": base_url,
@@ -99,35 +99,27 @@ def main():
             "mutation_tested": bool(args.mutate)
         }
 
-        # Always print to stdout
-       #print("\nGraphQL Map Report")
+        # Always print the report to stdout
+        print("\nGraphQL Map Report")
         print("=" * 40)
         print(f"URL:                {report_data['url']}")
         print(f"GraphQL Endpoint:   {report_data['endpoint']}")
         print(f"Introspection:      {'✅' if report_data['introspected'] else '❌'}")
         print(f"Injection Tested:   {'✅' if report_data['injection_tested'] else '❌'}")
         print(f"Mutation Tested:    {'✅' if report_data['mutation_tested'] else '❌'}")
-       #print(f"Generated On:       {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        print(f"Generated On:       {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
-        # Only save report if output flag is given
+        # Only write to file if --output is used
         if args.output:
-        domain = urlparse(base_url).netloc.replace('.', '_')
-        report_path = args.report or f"output/{domain}_report.{args.output}"
+            domain = urlparse(base_url).netloc.replace('.', '_')
+            report_path = args.report or f"output/{domain}_report.{args.output}"
+            generate_report(
+                data=report_data,
+                output_file=report_path,
+                output_format=args.output
+            )
+            print(f"[+] Report saved to {report_path}")
 
-        report_data = {
-            "url": base_url,
-            "endpoint": target_endpoint or "N/A",
-            "introspected": bool(args.introspect),
-            "injection_tested": bool(args.inject),
-            "mutation_tested": bool(args.mutate)
-        }
 
-        generate_report(
-            data=report_data,
-            output_file=report_path,
-            output_format=args.output
-        )
-        print(f"[+] Report saved to {report_path}") 
-        
 if __name__ == "__main__":
     main()
