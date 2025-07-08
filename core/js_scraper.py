@@ -30,3 +30,7 @@ def find_graphql_in_js(js_links):
         except:
             continue
     return graphql_endpoints
+
+def find_graphql_from_js(base_url):
+    js_links = extract_js_links(base_url)
+    return find_graphql_in_js(js_links)
