@@ -3,12 +3,19 @@ import os
 import json
 from datetime import datetime
 
-def generate_html_report(data, output_file=None, output_format="txt"):
+def generate_report(data, output_file=None, output_format="txt"):
     try:
-        # Set default output path if not given
+        # Set default file name based on URL
+        domain = data.get("url", "report").replace("https://", "").replace("http://", "").replace("/", "_").strip("_")
+
+        # Auto-select file path if not provided
         if output_file is None:
-            domain = data.get("url", "report").replace("https://", "").replace("http://", "").replace("/", "_").strip("_")
-            output_file = f"output/{domain}_report.txt"
+            output_file = f"output/{domain}_report.{output_format}"
+
+        # Force correct extension if file extension does not match format
+        ext = os.path.splitext(output_file)[1][1:]
+        if ext != output_format:
+            output_file = os.path.splitext(output_file)[0] + f".{output_format}"
 
         os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
