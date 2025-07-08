@@ -1,0 +1,7 @@
+request
+httpx
+beautifulsoup4
+lxml
+PyJWT
+colorama
+tqdm
