@@ -3,7 +3,7 @@ from core.endpoint_finder import detect_graphql_endpoint
 from core.js_scraper import find_graphql_from_js
 from core.schema_enum import introspect_schema
 from core.injector import inject
-from core.utils import generate_html_report
+from core.utils import generate_report
 from core.auth_tester import test_auth_bypass
 from core.mutation_engine import run_mutation_engine
 from urllib.parse import urlparse
