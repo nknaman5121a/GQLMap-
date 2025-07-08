@@ -1,18 +1,15 @@
 # core/utils.py
-
 import os
 import json
 from datetime import datetime
-
 
 def generate_html_report(data, output_file="output/report.html", output_format="html"):
     try:
         os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
-      if output_format == "html":
-    with open(output_file, "w") as f:
-        f.write(f"""
-<!DOCTYPE html>
+        if output_format == "html":
+            with open(output_file, "w") as f:
+                f.write(f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -51,8 +48,8 @@ def generate_html_report(data, output_file="output/report.html", output_format="
     <div class="container">
         <h1>GraphQL Map Report</h1>
         <div class="summary">
-            <p><strong>URL:</strong> {data.get("url")}</p>
-            <p><strong>GraphQL Endpoint:</strong> {data.get("endpoint")}</p>
+            <p><strong>URL:</strong> {data.get("url", "N/A")}</p>
+            <p><strong>GraphQL Endpoint:</strong> {data.get("endpoint", "N/A")}</p>
             <p><strong>Introspection:</strong> <span class="status-{str(data.get("introspected")).lower()}">{'✅' if data.get("introspected") else '❌'}</span></p>
             <p><strong>Injection Tested:</strong> <span class="status-{str(data.get("injection_tested")).lower()}">{'✅' if data.get("injection_tested") else '❌'}</span></p>
             <p><strong>Mutation Tested:</strong> <span class="status-{str(data.get("mutation_tested")).lower()}">{'✅' if data.get("mutation_tested") else '❌'}</span></p>
@@ -60,17 +57,19 @@ def generate_html_report(data, output_file="output/report.html", output_format="
         </div>
     </div>
 </body>
-</html>
-""")
+</html>""")
         elif output_format == "json":
             with open(output_file, "w") as f:
                 json.dump(data, f, indent=2)
+
         elif output_format == "markdown":
             with open(output_file, "w") as f:
                 f.write("# GraphQL Map Report\n\n```json\n")
                 f.write(json.dumps(data, indent=4))
                 f.write("\n```")
+
         print(f"[+] Report saved to {output_file}")
+
     except Exception as e:
         print(f"[!] Failed to generate report: {e}")
 
