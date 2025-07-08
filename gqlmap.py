@@ -110,24 +110,24 @@ def main():
        #print(f"Generated On:       {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
         # Only save report if output flag is given
-       if args.output:
-            domain = urlparse(base_url).netloc.replace('.', '_')
-            report_path = args.report or f"output/{domain}_report.{args.output}"
-    
-            report_data = {
-                "url": base_url,
-                "endpoint": target_endpoint or "N/A",
-                "introspected": bool(args.introspect),
-                "injection_tested": bool(args.inject),
-                "mutation_tested": bool(args.mutate)
-            }
-    
-            generate_report(
-                data=report_data,
-                output_file=report_path,
-                output_format=args.output
-            )
-            print(f"[+] Report saved to {report_path}")
+        if args.output:
+        domain = urlparse(base_url).netloc.replace('.', '_')
+        report_path = args.report or f"output/{domain}_report.{args.output}"
 
+        report_data = {
+            "url": base_url,
+            "endpoint": target_endpoint or "N/A",
+            "introspected": bool(args.introspect),
+            "injection_tested": bool(args.inject),
+            "mutation_tested": bool(args.mutate)
+        }
+
+        generate_report(
+            data=report_data,
+            output_file=report_path,
+            output_format=args.output
+        )
+        print(f"[+] Report saved to {report_path}") 
+        
 if __name__ == "__main__":
     main()
