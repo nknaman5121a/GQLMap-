@@ -3,7 +3,10 @@
 import os
 import json
 
-def generate_html_report(data, output_file="output/report.html", output_format="html"):
+def generate_html_report(data, output_file="output/report.html", output_format="html", report_path=None):
+    # Use report_path if provided (backward-compatible with old call)
+    output_file = report_path if report_path else output_file
+
     try:
         if output_format == "html":
             with open(output_file, "w") as f:
@@ -11,7 +14,6 @@ def generate_html_report(data, output_file="output/report.html", output_format="
                 f.write(str(data))
                 f.write("</pre></body></html>")
         elif output_format == "json":
-            import json
             with open(output_file, "w") as f:
                 json.dump(data, f, indent=2)
         elif output_format == "markdown":
@@ -22,6 +24,7 @@ def generate_html_report(data, output_file="output/report.html", output_format="
         print(f"[+] Report saved to {output_file}")
     except Exception as e:
         print(f"[!] Failed to generate report: {e}")
+
 
 
 def save_to_report(data, filename="output/report.json"):
