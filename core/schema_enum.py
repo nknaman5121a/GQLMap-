@@ -49,7 +49,7 @@ HEADERS = {
     "Accept": "application/json"
 }
 
-def test_introspection(url):
+def introspect_schema(url):
     try:
         response = httpx.post(url, json=INTROSPECTION_QUERY, headers=HEADERS, timeout=10)
         if "__schema" in response.text:
