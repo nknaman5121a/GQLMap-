@@ -26,7 +26,7 @@ def main():
     parser.add_argument("--retries", type=int, default=2, help="Retry count for failed requests")
     parser.add_argument("--verbose", action="store_true", help="Verbose output (debug level)")
     parser.add_argument("--report", help="Custom report file path")
-    parser.add_argument("--output", choices=["html", "json", "markdown"], default="html", help="Output report format")
+    parser.add_argument("--output", choices=["html", "json", "markdown", "txt"], default="txt", help="Output report format")
 
     args = parser.parse_args()
 
