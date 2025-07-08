@@ -50,14 +50,15 @@ def generate_html_report(data, output_file="output/report.html", output_format="
         <div class="summary">
             <p><strong>URL:</strong> {data.get("url", "N/A")}</p>
             <p><strong>GraphQL Endpoint:</strong> {data.get("endpoint", "N/A")}</p>
-            <p><strong>Introspection:</strong> <span class="status-{str(data.get("introspected")).lower()}">{'✅' if data.get("introspected") else '❌'}</span></p>
-            <p><strong>Injection Tested:</strong> <span class="status-{str(data.get("injection_tested")).lower()}">{'✅' if data.get("injection_tested") else '❌'}</span></p>
-            <p><strong>Mutation Tested:</strong> <span class="status-{str(data.get("mutation_tested")).lower()}">{'✅' if data.get("mutation_tested") else '❌'}</span></p>
+            <p><strong>Introspection:</strong> {'✅' if data.get("introspected") else '❌'}</p>
+            <p><strong>Injection Tested:</strong> {'✅' if data.get("injection_tested") else '❌'}</p>
+            <p><strong>Mutation Tested:</strong> {'✅' if data.get("mutation_tested") else '❌'}</p>
             <p><strong>Generated On:</strong> {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}</p>
         </div>
     </div>
 </body>
 </html>""")
+
         elif output_format == "json":
             with open(output_file, "w") as f:
                 json.dump(data, f, indent=2)
@@ -68,10 +69,22 @@ def generate_html_report(data, output_file="output/report.html", output_format="
                 f.write(json.dumps(data, indent=4))
                 f.write("\n```")
 
+        elif output_format == "txt":
+            with open(output_file, "w") as f:
+                f.write("GraphQL Map Report\n")
+                f.write("=" * 40 + "\n")
+                f.write(f"URL:                {data.get('url', 'N/A')}\n")
+                f.write(f"GraphQL Endpoint:   {data.get('endpoint', 'N/A')}\n")
+                f.write(f"Introspection:      {'✅' if data.get('introspected') else '❌'}\n")
+                f.write(f"Injection Tested:   {'✅' if data.get('injection_tested') else '❌'}\n")
+                f.write(f"Mutation Tested:    {'✅' if data.get('mutation_tested') else '❌'}\n")
+                f.write(f"Generated On:       {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+
         print(f"[+] Report saved to {output_file}")
 
     except Exception as e:
         print(f"[!] Failed to generate report: {e}")
+
 
 
 
