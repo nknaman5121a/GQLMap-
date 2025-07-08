@@ -1,7 +1,7 @@
 import json
 import time
 import httpx
-from core.schema_enum import test_introspection
+from core.schema_enum import introspect_schema
 from config.payloads import load_payloads
 
 HEADERS = {
