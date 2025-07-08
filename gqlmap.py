@@ -6,6 +6,8 @@ from core.injector import inject
 from core.utils import generate_html_report
 from core.auth_tester import test_auth_bypass
 from core.mutation_engine import run_mutation_engine
+from urllib.parse import urlparse
+
 
 
 def main():
@@ -88,11 +90,25 @@ def main():
 
     # Step 5: Report generation
     if args.introspect or args.inject or args.mutate:
+        domain = urlparse(base_url).netloc.replace('.', '_')
+        
+        # Use user-defined report path or default one
+        report_path = args.report or f"output/{domain}_report.{args.output or 'html'}"
+        
+        # Create dummy report content (replace with actual data collected)
+        report_data = {
+            "url": base_url,
+            "endpoint": target_endpoint or "N/A",
+            "introspected": bool(args.introspect),
+            "injection_tested": bool(args.inject),
+            "mutation_tested": bool(args.mutate)
+            # Add more fields as needed
+        }
+    
         generate_html_report(
-            base_url,
-            target_endpoint or "N/A",
-            output_format=args.output,
-            report_path=args.report
+            data=report_data,
+            output_file=report_path,
+            output_format=args.output
         )
 
     # Step 6: Auth Bypass
