@@ -5,6 +5,7 @@
 🛡️ Bypass authentication, test roles, and headers  
 🧪 Injection payloads: SQLi, XSS, RCE, prototype pollution
 
+---
 ## 🚀 Features
 
 - Auto endpoint detection
@@ -15,14 +16,15 @@
 - Auth bypass and token/header fuzzing
 - HTML, JSON, and Markdown reports
 
+---
 ## 📦 Installation
 
 ```bash
 git clone https://github.com/nknaman5121a/GQLMap.git
 cd GQLMap
 pip install -r requirements.txt
+```
 ---
-
 ## 🔧 CLI Flags & Usage  
 | Flag | Description |
 |------|-------------|
@@ -43,6 +45,7 @@ pip install -r requirements.txt
 | `--timeout <sec>` | Timeout for each request (default: 10) |
 | `--retries <n>` | Number of retries on failure (default: 2) |
 
+---
 ##Examples
 # Auto-detect endpoint and run full recon
 python gqlmap.py https://target.com --crawl --introspect
@@ -55,3 +58,6 @@ python gqlmap.py https://target.com --token abc --test-roles --mutate
 
 # Custom report path and format
 python gqlmap.py https://target.com --inject --output html --report output/reports/target.html
+
+🔓 Header fuzzing + token-based auth bypass
+python gqlmap.py https://target.com --token xyz --header-fuzz
