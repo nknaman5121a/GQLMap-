@@ -48,16 +48,22 @@ pip install -r requirements.txt
 ---
 ##Examples
 # Auto-detect endpoint and run full recon
+```bash
 python gqlmap.py https://target.com --crawl --introspect
-
+```
 # Authenticated injection test
+```bash
 python gqlmap.py https://target.com --token abc.def.ghi --inject
-
+```
 # Full auth & mutation logic bypass fuzzing
+```bash
 python gqlmap.py https://target.com --token abc --test-roles --mutate
-
+```
 # Custom report path and format
+```bash
 python gqlmap.py https://target.com --inject --output html --report output/reports/target.html
-
+```
 🔓 Header fuzzing + token-based auth bypass
+```bash
 python gqlmap.py https://target.com --token xyz --header-fuzz
+```
