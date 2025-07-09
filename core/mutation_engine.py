@@ -62,20 +62,29 @@ def send_mutation_request(url, mutation, headers, timeout, retries, verbose):
 
 # Format entry in readable markdown-style
 def format_mutation_log_entry(entry, index):
+    # ANSI colors
+    RED = "\033[91m"
+    GREEN = "\033[92m"
+    YELLOW = "\033[93m"
+    BLUE = "\033[94m"
+    CYAN = "\033[96m"
+    RESET = "\033[0m"
+
+    # Status code to label + color
     status_label = {
-        403: "🔒 403 Forbidden",
-        405: "🚫 405 Method Not Allowed",
-        200: "✅ 200 OK",
-        500: "💥 500 Internal Server Error"
-    }.get(entry["status_code"], f"🔸 {entry['status_code']}")
+        403: f"{RED}🔒 403 Forbidden{RESET}",
+        405: f"{YELLOW}🚫 405 Method Not Allowed{RESET}",
+        200: f"{GREEN}✅ 200 OK{RESET}",
+        500: f"{RED}💥 500 Internal Server Error{RESET}"
+    }.get(entry["status_code"], f"{CYAN}🔸 {entry['status_code']}{RESET}")
 
     return f"""
-#### ⚔️ Mutation #{index} — {status_label}
-📤 Payload:
+{BLUE}#### ⚔️ Mutation #{index} — {status_label}{RESET}
+{YELLOW}📤 Payload:{RESET}
 
 {entry['mutation']}
 
-🧪 Response Snippet:
+{CYAN}🧪 Response Snippet:{RESET}
 
 {entry['response'].strip()}
 """
