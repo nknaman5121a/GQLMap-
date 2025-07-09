@@ -46,7 +46,8 @@ pip install -r requirements.txt
 | `--retries <n>` | Number of retries on failure (default: 2) |
 
 ---
-##Examples
+## Examples
+
 # Auto-detect endpoint and run full recon
 ```bash
 python gqlmap.py https://target.com --crawl --introspect
