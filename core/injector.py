@@ -41,10 +41,9 @@ def send_payload(endpoint, query):
 def inject(endpoint):
     print(f"[*] Loading payloads and performing introspection on {endpoint} ...")
     
-    schema = introspect_schema(endpoint)
-    success = bool(schema)
-    
-    if not success:
+    success, schema = introspect_schema(endpoint)   # <-- unpack the tuple
+
+    if not success or not schema:
         print("[-] Introspection failed. Cannot inject without schema.")
         return
 
@@ -54,7 +53,7 @@ def inject(endpoint):
     print(f"[+] Loaded {len(injections)} payloads. Starting injection tests...\n")
     log_entries = []
 
-    # Extract field names from introspection schema
+    # Now schema is a dict — you can safely call .get()
     tested_fields = [t['name'] for t in schema.get('data', {}).get('__schema', {}).get('queryType', {}).get('fields', [])]
 
     for field in tested_fields:
@@ -63,7 +62,6 @@ def inject(endpoint):
             gql = fuzz_field(field, payload)
             result = send_payload(endpoint, gql)
 
-            # Simple heuristic detection
             is_vuln = (
                 "error" in result['text'].lower()
                 or result['status_code'] >= 500
@@ -83,9 +81,9 @@ def inject(endpoint):
             }
             log_entries.append(entry)
 
-    # Save log
     with open(LOG_FILE, "w", encoding="utf-8") as f:
         for entry in log_entries:
             f.write(json.dumps(entry, indent=2) + "\n")
 
     print(f"\n[+] Injection testing complete. Results saved to {LOG_FILE}")
+
