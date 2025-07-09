@@ -2,6 +2,7 @@ import requests
 import json
 import threading
 import time
+import os
 from core.utils import save_to_report
 
 COMMON_MUTATIONS = [
@@ -50,6 +51,7 @@ def send_mutation_request(url, mutation, headers, timeout, retries, verbose):
                 print(f"[-] Final failure for mutation: {mutation[:60]} | Error: {e}")
                 return {"mutation": mutation, "status_code": "ERROR", "response": str(e)}
 
+
 def run_mutation_engine(base_url, endpoint, headers, threads=5, timeout=10, retries=2, verbose=False):
     url = endpoint if endpoint.startswith("http") else base_url.rstrip("/") + "/" + endpoint.lstrip("/")
     print(f"[*] Fuzzing mutations at: {url} with {threads} threads")
@@ -77,4 +79,14 @@ def run_mutation_engine(base_url, endpoint, headers, threads=5, timeout=10, retr
         t.join()
 
     print(f"[*] Mutation fuzzing complete. {len(results)} mutations tested.")
+
+    # Save all results to log file
+    os.makedirs("output/logs", exist_ok=True)
+    log_path = "output/logs/mutation_log.txt"
+
+    with open(log_path, "w", encoding="utf-8") as f:
+        for entry in results:
+            f.write(json.dumps(entry, indent=2) + "\n")
+
+    print(f"[+] Mutation results saved to {log_path}")
     return results
