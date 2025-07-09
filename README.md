@@ -20,7 +20,7 @@
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/nknaman5121a/GQLMap.git
+git clone https://github.com/nknaman5121a/GQLMap-
 cd GQLMap
 pip install -r requirements.txt
 ```
