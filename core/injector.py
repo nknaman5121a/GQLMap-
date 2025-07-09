@@ -40,7 +40,10 @@ def send_payload(endpoint, query):
 
 def inject(endpoint):
     print(f"[*] Loading payloads and performing introspection on {endpoint} ...")
-    success, schema = test_introspection(endpoint)
+    
+    schema = introspect_schema(endpoint)
+    success = bool(schema)
+    
     if not success:
         print("[-] Introspection failed. Cannot inject without schema.")
         return
@@ -51,6 +54,7 @@ def inject(endpoint):
     print(f"[+] Loaded {len(injections)} payloads. Starting injection tests...\n")
     log_entries = []
 
+    # Extract field names from introspection schema
     tested_fields = [t['name'] for t in schema.get('data', {}).get('__schema', {}).get('queryType', {}).get('fields', [])]
 
     for field in tested_fields:
