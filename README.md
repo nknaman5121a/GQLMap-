@@ -64,7 +64,7 @@ python gqlmap.py https://target.com --token abc --test-roles --mutate
 ```bash
 python gqlmap.py https://target.com --inject --output html --report output/reports/target.html
 ```
-🔓 Header fuzzing + token-based auth bypass
+# Header fuzzing + token-based auth bypass
 ```bash
 python gqlmap.py https://target.com --token xyz --header-fuzz
 ```
