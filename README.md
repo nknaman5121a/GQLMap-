@@ -21,6 +21,7 @@
 git clone https://github.com/nknaman5121a/GQLMap.git
 cd GQLMap
 pip install -r requirements.txt
+---
 
 ## 🔧 CLI Flags & Usage  
 | Flag | Description |
